@@ -5,10 +5,7 @@ from dash.dependencies import Input, Output
 # see https://community.plot.ly/t/nolayoutexception-on-deployment-of-multi-page-dash-app-example-code/12463/2?u=dcomfort
 from app import server
 from app import app
-from layouts import (
-    layout_birst_category,
-    noPage,
-)
+from layouts import layout_datamining_category, noPage
 import callbacks
 
 import pandas as pd
@@ -22,7 +19,7 @@ app.index_string = """
 <html>
     <head>
         {%metas%}
-        <title>Stark Performance Marketing Report</title>
+        <title>Data Mining Report</title>
         {%favicon%}
         {%css%}
     </head>
@@ -33,7 +30,7 @@ app.index_string = """
             {%scripts%}
             {%renderer%}
         </footer>
-        <div>Stark Performance Marketing Report</div>
+        <div>Data Mining Report</div>
     </body>
 </html>
 """
@@ -44,8 +41,12 @@ app.layout = html.Div([dcc.Location(id="url", refresh=False), html.Div(id="page-
 # # # # # # # # #
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
-    if pathname == "/cc-travel-report/" or pathname == "/cc-travel-report/overview-birst/":
-        return layout_birst_category
+    if (
+        pathname == "/cc-travel-report/"
+        or pathname == "/cc-travel-report/overview-datamining"
+        or pathname == "/cc-travel-report/overview-datamining/"
+    ):
+        return layout_datamining_category
     else:
         return noPage
 

@@ -15,162 +15,26 @@ import xlsxwriter
 import flask
 from flask import send_file
 
-from components import (
-    formatter_currency,
-    formatter_currency_with_cents,
-    formatter_percent,
-    formatter_percent_2_digits,
-    formatter_number,
-)
-from components import update_first_datatable, update_first_download, update_second_datatable, update_graph
+from components import df, update_datatable, update_download
 
 
 pd.options.mode.chained_assignment = None
 
-# Read in Travel Report Data
-df = pd.read_csv("data/performance_analytics_cost_and_ga_metrics.csv")
-
-df.rename(
-    columns={
-        "Travel Product": "Placement type",
-        "Spend - This Year": "Spend TY",
-        "Spend - Last Year": "Spend LY",
-        "Sessions - This Year": "Sessions - TY",
-        "Sessions - Last Year": "Sessions - LY",
-        "Bookings - This Year": "Bookings - TY",
-        "Bookings - Last Year": "Bookings - LY",
-        "Revenue - This Year": "Revenue - TY",
-        "Revenue - Last Year": "Revenue - LY",
-    },
-    inplace=True,
-)
-
-df["Date"] = pd.to_datetime(df["Date"])
-current_year = df["Year"].max()
-current_week = df[df["Year"] == current_year]["Week"].max()
 
 now = datetime.now()
 datestamp = now.strftime("%Y%m%d")
 
-columns = [
-    "Spend TY",
-    "Spend LY",
-    "Sessions - TY",
-    "Sessions - LY",
-    "Bookings - TY",
-    "Bookings - LY",
-    "Revenue - TY",
-    "Revenue - LY",
-]
+columns_complete = list(df.columns)
+columns_condensed = ["Date", "Travel Product", "Sessions - This Year"]
 
-columns_complete = [
-    "Placement type",
-    "Spend TY",
-    "Spend - LP",
-    "Spend PoP (Abs)",
-    "Spend PoP (%)",
-    "Spend LY",
-    "Spend YoY (%)",
-    "Sessions - TY",
-    "Sessions - LP",
-    "Sessions - LY",
-    "Sessions PoP (%)",
-    "Sessions YoY (%)",
-    "Bookings - TY",
-    "Bookings - LP",
-    "Bookings PoP (%)",
-    "Bookings PoP (Abs)",
-    "Bookings - LY",
-    "Bookings YoY (%)",
-    "Bookings YoY (Abs)",
-    "Revenue - TY",
-    "Revenue - LP",
-    "Revenue PoP (Abs)",
-    "Revenue PoP (%)",
-    "Revenue - LY",
-    "Revenue YoY (%)",
-    "Revenue YoY (Abs)",
-]
-
-columns_condensed = [
-    "Placement type",
-    "Spend TY",
-    "Spend PoP (%)",
-    "Spend YoY (%)",
-    "Sessions - TY",
-    "Sessions PoP (%)",
-    "Sessions YoY (%)",
-    "Bookings - TY",
-    "Bookings PoP (%)",
-    "Bookings YoY (%)",
-]
-
-conditional_columns = [
-    "Spend_PoP_abs_conditional",
-    "Spend_PoP_percent_conditional",
-    "Spend_YoY_percent_conditional",
-    "Sessions_PoP_percent_conditional",
-    "Sessions_YoY_percent_conditional",
-    "Bookings_PoP_abs_conditional",
-    "Bookings_YoY_abs_conditional",
-    "Bookings_PoP_percent_conditional",
-    "Bookings_YoY_percent_conditional",
-    "Revenue_PoP_abs_conditional",
-    "Revenue_YoY_abs_conditional",
-    "Revenue_PoP_percent_conditional",
-    "Revenue_YoY_percent_conditional",
-]
-
-dt_columns_total = [
-    "Placement type",
-    "Spend TY",
-    "Spend - LP",
-    "Spend PoP (Abs)",
-    "Spend PoP (%)",
-    "Spend LY",
-    "Spend YoY (%)",
-    "Sessions - TY",
-    "Sessions - LP",
-    "Sessions - LY",
-    "Sessions PoP (%)",
-    "Sessions YoY (%)",
-    "Bookings - TY",
-    "Bookings - LP",
-    "Bookings PoP (%)",
-    "Bookings PoP (Abs)",
-    "Bookings - LY",
-    "Bookings YoY (%)",
-    "Bookings YoY (Abs)",
-    "Revenue - TY",
-    "Revenue - LP",
-    "Revenue PoP (Abs)",
-    "Revenue PoP (%)",
-    "Revenue - LY",
-    "Revenue YoY (%)",
-    "Revenue YoY (Abs)",
-    "Spend_PoP_abs_conditional",
-    "Spend_PoP_percent_conditional",
-    "Spend_YoY_percent_conditional",
-    "Sessions_PoP_percent_conditional",
-    "Sessions_YoY_percent_conditional",
-    "Bookings_PoP_abs_conditional",
-    "Bookings_YoY_abs_conditional",
-    "Bookings_PoP_percent_conditional",
-    "Bookings_YoY_percent_conditional",
-    "Revenue_PoP_abs_conditional",
-    "Revenue_YoY_abs_conditional",
-    "Revenue_PoP_percent_conditional",
-    "Revenue_YoY_percent_conditional",
-]
-
-######################## Birst Category Callbacks ########################
+######################## Datamining Category Callbacks ########################
 
 #### Date Picker Callback
 @app.callback(
-    Output("output-container-date-picker-range-birst-category", "children"),
+    Output("output-container-date-picker-range-datamining-category", "children"),
     [
-        Input("my-date-picker-range-birst-category", "start_date"),
-        Input("my-date-picker-range-birst-category", "end_date"),
+        Input("my-date-picker-range-datamining-category", "start_date"),
+        Input("my-date-picker-range-datamining-category", "end_date"),
     ],
 )
 def update_output(start_date, end_date):
@@ -207,19 +71,19 @@ def update_output(start_date, end_date):
 
 # Callback and update first data table
 @app.callback(
-    Output("datatable-birst-category", "data"),
+    Output("datatable-datamining-category", "data"),
     [
-        Input("my-date-picker-range-birst-category", "start_date"),
-        Input("my-date-picker-range-birst-category", "end_date"),
+        Input("my-date-picker-range-datamining-category", "start_date"),
+        Input("my-date-picker-range-datamining-category", "end_date"),
     ],
 )
 def update_data_1(start_date, end_date):
-    data_1 = update_first_datatable(start_date, end_date, None, "Birst Category")
+    data_1 = update_datatable(start_date, end_date)
     return data_1
 
 
 # Callback and update data table columns
-@app.callback(Output("datatable-birst-category", "columns"), [Input("radio-button-birst-category", "value")])
+@app.callback(Output("datatable-datamining-category", "columns"), [Input("radio-button-datamining-category", "value")])
 def update_columns(value):
     if value == "Complete":
         column_set = [{"name": i, "id": i, "deletable": True} for i in columns_complete]
@@ -230,34 +94,34 @@ def update_columns(value):
 
 # Callback for excel download
 @app.callback(
-    Output("download-link-birst-category", "href"),
+    Output("download-link-datamining-category", "href"),
     [
-        Input("my-date-picker-range-birst-category", "start_date"),
-        Input("my-date-picker-range-birst-category", "end_date"),
+        Input("my-date-picker-range-datamining-category", "start_date"),
+        Input("my-date-picker-range-datamining-category", "end_date"),
     ],
 )
 def update_link(start_date, end_date):
-    return "/cc-travel-report/birst-category/urlToDownload?value={}/{}".format(
+    return "/cc-travel-report/datamining-category/urlToDownload?value={}/{}".format(
         dt.strptime(start_date, "%Y-%m-%d").strftime("%Y-%m-%d"), dt.strptime(end_date, "%Y-%m-%d").strftime("%Y-%m-%d")
     )
 
 
-@app.server.route("/cc-travel-report/birst-category/urlToDownload")
-def download_excel_birst_category():
+@app.server.route("/cc-travel-report/datamining-category/urlToDownload")
+def download_excel_datamining_category():
     value = flask.request.args.get("value")
     # here is where I split the value
     value = value.split("/")
     start_date = value[0]
     end_date = value[1]
 
-    filename = datestamp + "_birst_category_" + start_date + "_to_" + end_date + ".xlsx"
+    filename = datestamp + "_datamining_category_" + start_date + "_to_" + end_date + ".xlsx"
     # Dummy Dataframe
     d = {"col1": [1, 2], "col2": [3, 4]}
     df = pd.DataFrame(data=d)
 
     buf = io.BytesIO()
     excel_writer = pd.ExcelWriter(buf, engine="xlsxwriter")
-    download_1 = update_first_download(start_date, end_date, None, "Birst Category")
+    download_1 = update_download(start_date, end_date)
     download_1.to_excel(excel_writer, sheet_name="sheet1", index=False)
     # df.to_excel(excel_writer, sheet_name="sheet1", index=False)
     excel_writer.save()
@@ -271,48 +135,3 @@ def download_excel_birst_category():
         as_attachment=True,
         cache_timeout=0,
     )
-
-
-# Callback and update second data table
-@app.callback(
-    Output("datatable-birst-category-2", "data"),
-    [
-        Input("my-date-picker-range-birst-category", "start_date"),
-        Input("my-date-picker-range-birst-category", "end_date"),
-    ],
-)
-def update_data_2(start_date, end_date):
-    data_2 = update_second_datatable(start_date, end_date, None, "Birst Category")
-    return data_2
-
-
-# Callback for the Graphs
-@app.callback(
-    Output("birst-category", "figure"),
-    [Input("datatable-birst-category", "selected_rows"), Input("my-date-picker-range-birst-category", "end_date")],
-)
-def update_birst_category(selected_rows, end_date):
-    travel_product = []
-    travel_product_list = sorted(df["Birst Category"].unique().tolist())
-    for i in selected_rows:
-        travel_product.append(travel_product_list[i])
-        # Filter by specific product
-    filtered_df = (
-        df[(df["Birst Category"].isin(travel_product))]
-        .groupby(["Year", "Week"])
-        .sum()[
-            [
-                "Spend TY",
-                "Spend LY",
-                "Sessions - TY",
-                "Sessions - LY",
-                "Bookings - TY",
-                "Bookings - LY",
-                "Revenue - TY",
-                "Revenue - LY",
-            ]
-        ]
-        .reset_index()
-    )
-    fig = update_graph(filtered_df, end_date)
-    return fig

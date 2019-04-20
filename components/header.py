@@ -30,7 +30,7 @@ def get_logo():
 
 def get_header():
     header = html.Div(
-        [html.Div([html.H5("House Stark Performance Marketing Report")], className="twelve columns padded")],
+        [html.Div([html.H5("Data Mining Report")], className="twelve columns padded")],
         className="row gs-header gs-text-header",
     )
     return header
@@ -38,9 +38,6 @@ def get_header():
 
 def get_menu():
     menu = html.Div(
-        [
-            dcc.Link("Overview - Birst   ", href="/cc-travel-report/overview-birst/", className="tab first"),
-        ],
-        className="row ",
+        [dcc.Link("Overview", href="/cc-travel-report/overview-datamining/", className="tab first")], className="row "
     )
     return menu
