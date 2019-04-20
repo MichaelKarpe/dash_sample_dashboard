@@ -108,6 +108,14 @@ layout_datamining_category = html.Div(
                 html.Div(
                     [html.A(html.Button("Download Data", id="download-button"), id="download-link-datamining-category")]
                 ),
+                # GRAPHS
+                html.Div(
+                    [
+                        html.Div(id="update_graph"),
+                        html.Div([dcc.Graph(id="datamining-category")], className=" twelve columns"),
+                    ],
+                    className="row ",
+                ),
             ],
             className="subpage",
         )

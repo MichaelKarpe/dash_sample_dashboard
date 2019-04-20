@@ -15,7 +15,7 @@ import xlsxwriter
 import flask
 from flask import send_file
 
-from components import df, update_datatable, update_download
+from components import df, update_datatable, update_download, update_graph
 
 
 pd.options.mode.chained_assignment = None
@@ -135,3 +135,11 @@ def download_excel_datamining_category():
         as_attachment=True,
         cache_timeout=0,
     )
+
+
+# Callback for the Graphs
+@app.callback(Output("datamining-category", "figure"), [Input("my-date-picker-range-datamining-category", "end_date")])
+def update_datamining_category(end_date):
+    filtered_df = df.groupby(["Travel Product"]).max()[["Sessions - This Year"]].reset_index()
+    fig = update_graph(filtered_df, end_date)
+    return fig
