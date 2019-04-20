@@ -40,13 +40,6 @@ def get_menu():
     menu = html.Div(
         [
             dcc.Link("Overview - Birst   ", href="/cc-travel-report/overview-birst/", className="tab first"),
-            dcc.Link("Overview - GA   ", href="/cc-travel-report/overview-ga/", className="tab"),
-            dcc.Link("Paid Search   ", href="/cc-travel-report/paid-search/", className="tab"),
-            dcc.Link("Display   ", href="/cc-travel-report/display/", className="tab"),
-            dcc.Link("Publishing   ", href="/cc-travel-report/publishing/", className="tab"),
-            dcc.Link(
-                "Metasearch and Travel Ads   ", href="/cc-travel-report/metasearch-and-travel-ads/", className="tab"
-            ),
         ],
         className="row ",
     )

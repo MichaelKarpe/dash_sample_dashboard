@@ -16,55 +16,6 @@
 	  outline: 2cm whitesmoke solid;
  }
 
-#datatable-paid-search > div > div > div.row.row-1 > div.cell.cell-1-0.dash-fixed-column {
-    flex: 0 0 auto;
-    left: 0;
-    position: sticky;
-    z-index: 0;
-}
-
-#datatable-display > div > div > div.row.row-1 > div.cell.cell-1-0.dash-fixed-column {
-    flex: 0 0 auto;
-    left: 0;
-    position: sticky;
-    z-index: 0;
-}
-
-#datatable-display-2 > div > div > div.row.row-1 > div.cell.cell-1-0.dash-fixed-column {
-    flex: 0 0 auto;
-    left: 0;
-    position: sticky;
-    z-index: 0;
-}
-
-#datatable-publishing > div > div > div.row.row-1 > div.cell.cell-1-0.dash-fixed-column {
-    flex: 0 0 auto;
-    left: 0;
-    position: sticky;
-    z-index: 0;
-}
-
-#datatable-publishing-2 > div > div > div.row.row-1 > div.cell.cell-1-0.dash-fixed-column {
-    flex: 0 0 auto;
-    left: 0;
-    position: sticky;
-    z-index: 0;
-}
-
-#datatable-metasearch > div > div > div.row.row-1 > div.cell.cell-1-0.dash-fixed-column {
-    flex: 0 0 auto;
-    left: 0;
-    position: sticky;
-    z-index: 0;
-}
-
-#datatable-ga-category > div > div > div.row.row-1 > div.cell.cell-1-0.dash-fixed-column {
-    flex: 0 0 auto;
-    left: 0;
-    position: sticky;
-    z-index: 0;
-}
-
 #datatable-birst-category > div > div > div.row.row-1 > div.cell.cell-1-0.dash-fixed-column {
     flex: 0 0 auto;
     left: 0;

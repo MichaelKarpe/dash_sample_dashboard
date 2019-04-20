@@ -83,56 +83,7 @@ def update_first_datatable(start_date, end_date, category, aggregation):
     prior_end_date = end_date - timedelta(days_selected + 1)
     prior_end_date_string = datetime.strftime(prior_end_date, "%Y-%m-%d")
 
-    if aggregation == "Placement type":
-        df1 = df[(df["Category"] == category)].groupby(["Date", aggregation]).sum()[columns].reset_index()
-        df_by_date = (
-            df1[(df1["Date"] >= start_date_string) & (df1["Date"] <= end_date_string)]
-            .groupby([aggregation])
-            .sum()[columns]
-            .reset_index()
-        )
-        df_by_date_prior = (
-            df1[(df1["Date"] >= prior_start_date_string) & (df1["Date"] <= prior_end_date_string)]
-            .groupby([aggregation])
-            .sum()[["Spend TY", "Sessions - TY", "Bookings - TY", "Revenue - TY"]]
-            .reset_index()
-        )
-        df_by_date_prior.rename(
-            columns={
-                "Spend TY": "Spend - LP",
-                "Sessions - TY": "Sessions - LP",
-                "Bookings - TY": "Bookings - LP",
-                "Revenue - TY": "Revenue - LP",
-            },
-            inplace=True,
-        )
-        df_by_date_combined = pd.merge(df_by_date, df_by_date_prior, on=[aggregation])
-    elif aggregation == "GA Category":
-        df1 = df.groupby(["Date", aggregation]).sum()[columns].reset_index()
-        df_by_date = (
-            df1[(df1["Date"] >= start_date_string) & (df1["Date"] <= end_date_string)]
-            .groupby([aggregation])
-            .sum()[columns]
-            .reset_index()
-        )
-        df_by_date_prior = (
-            df1[(df1["Date"] >= prior_start_date_string) & (df1["Date"] <= prior_end_date_string)]
-            .groupby([aggregation])
-            .sum()[["Spend TY", "Sessions - TY", "Bookings - TY", "Revenue - TY"]]
-            .reset_index()
-        )
-        df_by_date_prior.rename(
-            columns={
-                "Spend TY": "Spend - LP",
-                "Sessions - TY": "Sessions - LP",
-                "Bookings - TY": "Bookings - LP",
-                "Revenue - TY": "Revenue - LP",
-            },
-            inplace=True,
-        )
-        df_by_date_combined = pd.merge(df_by_date, df_by_date_prior, on=[aggregation])
-        df_by_date_combined.rename(columns={"GA Category": "Placement type"}, inplace=True)
-    elif aggregation == "Birst Category":
+    if aggregation == "Birst Category":
         df1 = df.groupby(["Date", aggregation]).sum()[columns].reset_index()
         df_by_date = (
             df1[(df1["Date"] >= start_date_string) & (df1["Date"] <= end_date_string)]
@@ -380,56 +331,7 @@ def update_first_download(start_date, end_date, category, aggregation):
     prior_end_date = end_date - timedelta(days_selected + 1)
     prior_end_date_string = datetime.strftime(prior_end_date, "%Y-%m-%d")
 
-    if aggregation == "Placement type":
-        df1 = df[(df["Category"] == category)].groupby(["Date", aggregation]).sum()[columns].reset_index()
-        df_by_date = (
-            df1[(df1["Date"] >= start_date_string) & (df1["Date"] <= end_date_string)]
-            .groupby([aggregation])
-            .sum()[columns]
-            .reset_index()
-        )
-        df_by_date_prior = (
-            df1[(df1["Date"] >= prior_start_date_string) & (df1["Date"] <= prior_end_date_string)]
-            .groupby([aggregation])
-            .sum()[["Spend TY", "Sessions - TY", "Bookings - TY", "Revenue - TY"]]
-            .reset_index()
-        )
-        df_by_date_prior.rename(
-            columns={
-                "Spend TY": "Spend - LP",
-                "Sessions - TY": "Sessions - LP",
-                "Bookings - TY": "Bookings - LP",
-                "Revenue - TY": "Revenue - LP",
-            },
-            inplace=True,
-        )
-        df_by_date_combined = pd.merge(df_by_date, df_by_date_prior, on=[aggregation])
-    elif aggregation == "GA Category":
-        df1 = df.groupby(["Date", aggregation]).sum()[columns].reset_index()
-        df_by_date = (
-            df1[(df1["Date"] >= start_date_string) & (df1["Date"] <= end_date_string)]
-            .groupby([aggregation])
-            .sum()[columns]
-            .reset_index()
-        )
-        df_by_date_prior = (
-            df1[(df1["Date"] >= prior_start_date_string) & (df1["Date"] <= prior_end_date_string)]
-            .groupby([aggregation])
-            .sum()[["Spend TY", "Sessions - TY", "Bookings - TY", "Revenue - TY"]]
-            .reset_index()
-        )
-        df_by_date_prior.rename(
-            columns={
-                "Spend TY": "Spend - LP",
-                "Sessions - TY": "Sessions - LP",
-                "Bookings - TY": "Bookings - LP",
-                "Revenue - TY": "Revenue - LP",
-            },
-            inplace=True,
-        )
-        df_by_date_combined = pd.merge(df_by_date, df_by_date_prior, on=[aggregation])
-        df_by_date_combined.rename(columns={"GA Category": "Placement type"}, inplace=True)
-    elif aggregation == "Birst Category":
+    if aggregation == "Birst Category":
         df1 = df.groupby(["Date", aggregation]).sum()[columns].reset_index()
         df_by_date = (
             df1[(df1["Date"] >= start_date_string) & (df1["Date"] <= end_date_string)]
@@ -764,56 +666,7 @@ def update_second_datatable(start_date, end_date, category, aggregation):
     prior_end_date = end_date - timedelta(days_selected + 1)
     prior_end_date_string = datetime.strftime(prior_end_date, "%Y-%m-%d")
 
-    if aggregation == "Placement type":
-        df1 = df[(df["Category"] == category)].groupby(["Date", aggregation]).sum()[columns].reset_index()
-        df_by_date = (
-            df1[(df1["Date"] >= start_date_string) & (df1["Date"] <= end_date_string)]
-            .groupby([aggregation])
-            .sum()[columns]
-            .reset_index()
-        )
-        df_by_date_prior = (
-            df1[(df1["Date"] >= prior_start_date_string) & (df1["Date"] <= prior_end_date_string)]
-            .groupby([aggregation])
-            .sum()[["Spend TY", "Sessions - TY", "Bookings - TY", "Revenue - TY"]]
-            .reset_index()
-        )
-        df_by_date_prior.rename(
-            columns={
-                "Spend TY": "Spend - LP",
-                "Sessions - TY": "Sessions - LP",
-                "Bookings - TY": "Bookings - LP",
-                "Revenue - TY": "Revenue - LP",
-            },
-            inplace=True,
-        )
-        df_by_date_combined = pd.merge(df_by_date, df_by_date_prior, on=[aggregation])
-    elif aggregation == "GA Category":
-        df1 = df.groupby(["Date", aggregation]).sum()[columns].reset_index()
-        df_by_date = (
-            df1[(df1["Date"] >= start_date_string) & (df1["Date"] <= end_date_string)]
-            .groupby([aggregation])
-            .sum()[columns]
-            .reset_index()
-        )
-        df_by_date_prior = (
-            df1[(df1["Date"] >= prior_start_date_string) & (df1["Date"] <= prior_end_date_string)]
-            .groupby([aggregation])
-            .sum()[["Spend TY", "Sessions - TY", "Bookings - TY", "Revenue - TY"]]
-            .reset_index()
-        )
-        df_by_date_prior.rename(
-            columns={
-                "Spend TY": "Spend - LP",
-                "Sessions - TY": "Sessions - LP",
-                "Bookings - TY": "Bookings - LP",
-                "Revenue - TY": "Revenue - LP",
-            },
-            inplace=True,
-        )
-        df_by_date_combined = pd.merge(df_by_date, df_by_date_prior, on=[aggregation])
-        df_by_date_combined.rename(columns={"GA Category": "Placement type"}, inplace=True)
-    elif aggregation == "Birst Category":
+    if aggregation == "Birst Category":
         df1 = df.groupby(["Date", aggregation]).sum()[columns].reset_index()
         df_by_date = (
             df1[(df1["Date"] >= start_date_string) & (df1["Date"] <= end_date_string)]

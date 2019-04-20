@@ -7,12 +7,7 @@ from app import server
 from app import app
 from layouts import (
     layout_birst_category,
-    layout_ga_category,
-    layout_paid_search,
     noPage,
-    layout_display,
-    layout_publishing,
-    layout_metasearch,
 )
 import callbacks
 
@@ -49,18 +44,8 @@ app.layout = html.Div([dcc.Location(id="url", refresh=False), html.Div(id="page-
 # # # # # # # # #
 @app.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def display_page(pathname):
-    if pathname == "/cc-travel-report" or pathname == "/cc-travel-report/overview-birst/":
+    if pathname == "/cc-travel-report/" or pathname == "/cc-travel-report/overview-birst/":
         return layout_birst_category
-    elif pathname == "/cc-travel-report/overview-ga/":
-        return layout_ga_category
-    elif pathname == "/cc-travel-report/paid-search/":
-        return layout_paid_search
-    elif pathname == "/cc-travel-report/display/":
-        return layout_display
-    elif pathname == "/cc-travel-report/publishing/":
-        return layout_publishing
-    elif pathname == "/cc-travel-report/metasearch-and-travel-ads/":
-        return layout_metasearch
     else:
         return noPage
 
