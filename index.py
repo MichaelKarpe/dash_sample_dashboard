@@ -36,6 +36,7 @@ app.index_string = """
         <footer>
             {%config%}
             {%scripts%}
+            {%renderer%}
         </footer>
         <div>Stark Performance Marketing Report</div>
     </body>
